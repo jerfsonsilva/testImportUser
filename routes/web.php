@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/importUser/{typefile}', [ImportUserController::class, 'index']);
+Route::get('/importUser', [ImportUserController::class, 'index'])->name('import_user');
