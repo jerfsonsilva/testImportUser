@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \App\Http\Controllers\util\FormatDateController as FormatDateController;
 
 class people extends Model
 {
@@ -14,12 +15,13 @@ class people extends Model
         $fields = ['name', 'account', 'checked', 'description', 'interest', 'email', 'account'];
         $newPeople = new people;
 
-        if(people::verifyUserExist($people) > 0) return false;
-        //verifyAgeUser($user)
+        if (people::verifyUserExist($people) > 0 || !people::verifyAgeUser($people['date_of_birth'])) return false;
+ 
         foreach ($fields as $key => $field) {
             $newPeople[$field] = isset($people[$field]) ? $people[$field] : null;
         }
-        $newPeople['date_of_birth'] = isset($people['date_of_birth']) ? date("Y-m-d", strtotime($people['date_of_birth'])) : null;
+        $newPeople['date_of_birth'] = ($people['date_of_birth'] != null && $people['date_of_birth'] != 'null') ? FormatDateController::formatDate($people['date_of_birth']): null;
+        
         if ($newPeople->save()) {
             if ($people['credit_card'])
                 \App\Models\people_credit_card::createCard($people['credit_card'], $newPeople->id);
@@ -31,8 +33,10 @@ class people extends Model
     {
         return people::where('email', $people['email'])->where('account', $people['account'])->count();
     }
-    public static function verifyAgeUser($people)
+    public static function verifyAgeUser($date)
     {
-        //TODO validation age of records between 18 and 65 (or unknown).
+        if($date === null || $date === 'null') return true;
+        $age = \Carbon\Carbon::parse(FormatDateController::formatDate($date))->age;
+        return $age > 17 && $age < 66; 
     }
 }
