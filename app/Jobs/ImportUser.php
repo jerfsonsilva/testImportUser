@@ -47,7 +47,7 @@ class ImportUser implements ShouldQueue
         }
 
         foreach ($listArray as $key => $user) {
-            \App\Http\Controllers\ImportUserController::createUser($user);
+            \App\Http\Controllers\ImportUserController::createPeople($user);
         }
     }
 

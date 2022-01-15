@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/importUser', [ImportUserController::class, 'index'])->name('import_user');
+Route::get('/importPeople', [ImportUserController::class, 'index'])->name('import_people');

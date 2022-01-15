@@ -15,10 +15,10 @@ class CreatePeopleCreditCardsTable extends Migration
     {
         Schema::create('people_credit_cards', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('number');
-            $table->string('name');
-            $table->string('expirationDate');
+            $table->string('type')->nullable();
+            $table->string('number')->nullable();
+            $table->string('name')->nullable();
+            $table->string('expirationDate')->nullable();
             
             $table->unsignedBigInteger('people_fk_id');
             $table->foreign('people_fk_id')->references('id')->on('people')->onDelete('cascade');
