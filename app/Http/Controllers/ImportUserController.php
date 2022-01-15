@@ -10,7 +10,7 @@ class ImportUserController extends Controller
    public function index()
    {
       ImportUser::dispatch();
-      return 'created order to import file';
+      return ['msg' => 'created order to import file'];
    }
 
    public static function createPeople($user)
