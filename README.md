@@ -67,6 +67,13 @@ php artisan queue:work
 
 ```
 
+### If the task delay to much, you can use this command to added more time 
+
+```
+php artisan queue:work --timeout=6000
+
+```
+
 ### Do you ready to start :D ?
 ## Route API BACKEND
 
