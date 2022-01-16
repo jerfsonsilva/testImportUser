@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ImportUserController;
+use App\Http\Controllers\PeopleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/importPeople', [ImportUserController::class, 'index'])->name('import_people');
+Route::get('/importPeople', [PeopleController::class, 'index'])->name('import_people');

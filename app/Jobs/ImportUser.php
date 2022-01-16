@@ -2,6 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Repositories\Interfaces\CreditCardRepositoryInteface;
+use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use App\Http\Services\Card\CreateCreditCardService;
+use App\Http\Services\People\CreatePeopleService;
+use App\Repositories\CreditCardRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,8 +32,10 @@ class ImportUser implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
+    public function handle(
+        CreatePeopleService $createPeopleService,
+        CreateCreditCardService $createCreditCardService
+    ) {
         $typeFile = 'json';
         $pathFile = public_path() . '/filesImport/challenge.json';
 
@@ -37,18 +44,23 @@ class ImportUser implements ShouldQueue
         switch ($typeFile) {
             case 'json':
                 $listArray = \App\Http\Controllers\util\GetFiletoArrayController::JsonToArray($pathFile);
-            break;
+                break;
             case 'csv':
                 $listArray = \App\Http\Controllers\util\GetFiletoArrayController::CSVtoArray($pathFile);
-            break;
+                break;
             case 'xml':
                 $listArray = \App\Http\Controllers\util\GetFiletoArrayController::XMLtoArray($pathFile);
-            break;
+                break;
         }
-
-        foreach ($listArray as $key => $user) {
-            \App\Http\Controllers\ImportUserController::createPeople($user);
+       
+        foreach ($listArray as $key => $people) {
+            try {
+                $peopleId = $createPeopleService->execute($people);
+                if ($peopleId !== 0)
+                   $createCreditCardService->execute($people['credit_card'], $peopleId);
+            } catch (\Throwable $th) {
+                var_dump($th);
+            }
         }
     }
-
 }

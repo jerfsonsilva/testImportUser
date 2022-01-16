@@ -11,7 +11,7 @@
 7. Create function verifyUserExist 
 8. Create function verifyAgeUser 
 9. Create Read.me
-
+10. Added repository pattern
 ### 1º) you should create a database named userImport
 
 #### After that you need configure the file .env and modified these variables and put your configuration
