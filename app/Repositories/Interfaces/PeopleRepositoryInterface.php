@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Http\Dtos\PeopleDto;
+
 interface PeopleRepositoryInterface
 {
-  public function create(Array $people ):?int;
+  public function create(PeopleDto $people ):?int;
 }

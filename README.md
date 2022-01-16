@@ -12,6 +12,7 @@
 8. Create function verifyAgeUser 
 9. Create Read.me
 10. Added repository pattern
+11. Added DTO pattern
 ### 1º) you should create a database named userImport
 
 #### After that you need configure the file .env and modified these variables and put your configuration
@@ -28,7 +29,15 @@ QUEUE_DRIVER=database​
 QUEUE_CONNECTION=database​
 
 ```
-### 2º) you need run this command, to generate a new key
+### 2º) you need install some packages
+
+```
+
+composer install
+
+```
+
+### 3º) you need run this command, to generate a new key
 
 ```
 
@@ -36,7 +45,7 @@ php artisan key:generate
 
 ```
 
-### 3º) you should run the migrations, you can use that command:
+### 4º) you should run the migrations, you can use that command:
 
 ```
 
@@ -44,7 +53,7 @@ php artisan migrate
 
 ```
 
-### 4º) you might start the serve and queue
+### 5º) you might start the serve and queue
 
 ```
 

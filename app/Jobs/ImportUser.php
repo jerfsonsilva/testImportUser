@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Repositories\Interfaces\CreditCardRepositoryInteface;
-use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use App\Http\Dtos\CardDto;
+use App\Http\Dtos\PeopleDto;
 use App\Http\Services\Card\CreateCreditCardService;
 use App\Http\Services\People\CreatePeopleService;
-use App\Repositories\CreditCardRepository;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -52,15 +50,17 @@ class ImportUser implements ShouldQueue
                 $listArray = \App\Http\Controllers\util\GetFiletoArrayController::XMLtoArray($pathFile);
                 break;
         }
-       
-        foreach ($listArray as $key => $people) {
-            try {
-                $peopleId = $createPeopleService->execute($people);
-                if ($peopleId !== 0)
-                   $createCreditCardService->execute($people['credit_card'], $peopleId);
-            } catch (\Throwable $th) {
-                var_dump($th);
+        try {
+            foreach ($listArray as $key => $people) {
+                $peopleDto = new PeopleDto($people);
+                $peopleId = $createPeopleService->execute($peopleDto);
+                if ($peopleId !== 0 && isset($people['credit_card'])) {
+                    $peopleDto = new CardDto($people['credit_card']);
+                    $createCreditCardService->execute($peopleDto, $peopleId);
+                }
             }
+        } catch (\Throwable $th) {
+            var_dump($th->getMessage());
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Services\Card;
 
+use App\Http\Dtos\CardDto;
+use App\Http\Dtos\PeopleDto;
 use App\Repositories\Interfaces\CreditCardRepositoryInteface;
 
 class CreateCreditCardService
@@ -13,7 +15,7 @@ class CreateCreditCardService
         $this->creditCardRepositoryInteface = $creditCardRepositoryInteface;
     }
 
-    public function execute(array $card, int $peopleId): ?int
+    public function execute(CardDto $card, int $peopleId): ?int
     {
         try {
             return $this->creditCardRepositoryInteface->create($card, $peopleId);

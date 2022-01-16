@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\People;
 
+use App\Http\Dtos\PeopleDto;
 use App\Repositories\Interfaces\PeopleRepositoryInterface;
 
 class CreatePeopleService
@@ -13,7 +14,7 @@ class CreatePeopleService
         $this->peopleRepositoryInterface = $peopleRepositoryInterface;
     }
     
-    public function execute(array $people): ?int
+    public function execute(PeopleDto $people): ?int
     {
         try {
             return $this->peopleRepositoryInterface->create($people);
